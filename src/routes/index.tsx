@@ -1,118 +1,99 @@
-import { createFileRoute } from '@tanstack/react-router'
-import {
-  Zap,
-  Server,
-  Route as RouteIcon,
-  Shield,
-  Waves,
-  Sparkles,
-} from 'lucide-react'
+import { DateFormatter } from "@/components/date-formatter";
+import { GithubIcon } from "@/components/svg/githubIcon";
+import { TwitterIcon } from "@/components/svg/twitterIcon";
+import { getAllBlogPosts, getPostMetadataFromContents, PostMetadata } from "@/util/blog-posts";
+import { createFileRoute } from "@tanstack/react-router";
+import { createServerFn } from "@tanstack/react-start";
+import { FC, PropsWithChildren } from "react";
 
-export const Route = createFileRoute('/')({ component: App })
+const getAllPosts = createServerFn().handler(async () => {
+  const postContentLookup = getAllBlogPosts();
+
+  const blogPosts = Object.entries(postContentLookup).map(([slug, content]) => {
+    return {
+      ...getPostMetadataFromContents(slug, content),
+      markdownContent: "",
+    };
+  });
+
+  const allPosts: PostMetadata[] = blogPosts
+    // sort posts by date in descending order
+    .sort((post1, post2) => (post1.date > post2.date ? -1 : 1));
+  return allPosts;
+});
+
+export const Route = createFileRoute("/")({
+  loader: async () => {
+    const allPosts = await getAllPosts();
+    return {
+      posts: allPosts,
+    };
+  },
+  component: App,
+});
+
+const PersonalLink: FC<PropsWithChildren<{ href: string }>> = ({ href, children }) => {
+  return (
+    <a href={href} className="flex items-center sm:gap-0.5 [&>:first-child]:w-4.5 [&_svg]:fill-(--link-color) sm:[&_svg]:h-4 [&_svg]:h-3.5">
+      {children}
+    </a>
+  );
+};
 
 function App() {
-  const features = [
-    {
-      icon: <Zap className="w-12 h-12 text-cyan-400" />,
-      title: 'Powerful Server Functions',
-      description:
-        'Write server-side code that seamlessly integrates with your client components. Type-safe, secure, and simple.',
-    },
-    {
-      icon: <Server className="w-12 h-12 text-cyan-400" />,
-      title: 'Flexible Server Side Rendering',
-      description:
-        'Full-document SSR, streaming, and progressive enhancement out of the box. Control exactly what renders where.',
-    },
-    {
-      icon: <RouteIcon className="w-12 h-12 text-cyan-400" />,
-      title: 'API Routes',
-      description:
-        'Build type-safe API endpoints alongside your application. No separate backend needed.',
-    },
-    {
-      icon: <Shield className="w-12 h-12 text-cyan-400" />,
-      title: 'Strongly Typed Everything',
-      description:
-        'End-to-end type safety from server to client. Catch errors before they reach production.',
-    },
-    {
-      icon: <Waves className="w-12 h-12 text-cyan-400" />,
-      title: 'Full Streaming Support',
-      description:
-        'Stream data from server to client progressively. Perfect for AI applications and real-time updates.',
-    },
-    {
-      icon: <Sparkles className="w-12 h-12 text-cyan-400" />,
-      title: 'Next Generation Ready',
-      description:
-        'Built from the ground up for modern web applications. Deploy anywhere JavaScript runs.',
-    },
-  ]
-
+  const { posts } = Route.useLoaderData();
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900">
-      <section className="relative py-20 px-6 text-center overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 via-blue-500/10 to-purple-500/10"></div>
-        <div className="relative max-w-5xl mx-auto">
-          <div className="flex items-center justify-center gap-6 mb-6">
-            <img
-              src="/tanstack-circle-logo.png"
-              alt="TanStack Logo"
-              className="w-24 h-24 md:w-32 md:h-32"
-            />
-            <h1 className="text-6xl md:text-7xl font-black text-white [letter-spacing:-0.08em]">
-              <span className="text-gray-300">TANSTACK</span>{' '}
-              <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
-                START
-              </span>
-            </h1>
+    <div>
+      <div className="blog-header flex mb-8">
+        <div className="rounded-full overflow-hidden sm:w-[125px] sm:h-[125px] w-24 h-24 sm:min-w-[125px] sm:min-h-[125px] min-w-24 min-h-24">
+          <img alt="Profile pic" className="rounded-full sm:w-[125px] sm:h-[125px] w-24 h-24" src="/assets/home/avatar.jpg" />
+        </div>
+        <div className="titles flex flex-col ml-2.5 justify-evenly">
+          <div className="flex flex-col gap-1">
+            <h1 className="leading-none text-xl sm:text-2xl md:text-3xl font-bold">Strangely Typed</h1>
+            <h3 className="leading-none text-sm sm:text-lg md:text-xl font-bold">Software engineering blog by Adam Rackis</h3>
           </div>
-          <p className="text-2xl md:text-3xl text-gray-300 mb-4 font-light">
-            The framework for next generation AI applications
-          </p>
-          <p className="text-lg text-gray-400 max-w-3xl mx-auto mb-8">
-            Full-stack framework powered by TanStack Router for React and Solid.
-            Build modern applications with server functions, streaming, and type
-            safety.
-          </p>
-          <div className="flex flex-col items-center gap-4">
-            <a
-              href="https://tanstack.com/start"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-8 py-3 bg-cyan-500 hover:bg-cyan-600 text-white font-semibold rounded-lg transition-colors shadow-lg shadow-cyan-500/50"
-            >
-              Documentation
-            </a>
-            <p className="text-gray-400 text-sm mt-2">
-              Begin your TanStack Start journey by editing{' '}
-              <code className="px-2 py-1 bg-slate-700 rounded text-cyan-400">
-                /src/routes/index.tsx
-              </code>
-            </p>
+          <div className="personal-links flex flex-col gap-1">
+            <h4 className="leading-none sm:text-base text-sm">
+              <PersonalLink href="https://twitter.com/AdamRackis">
+                <span>
+                  <TwitterIcon />
+                </span>
+                <span className="font-bold sm:text-base text-sm leading-none!">adamrackis</span>
+              </PersonalLink>
+            </h4>
+            <h4 className="leading-none">
+              <PersonalLink href="https://github.com/arackaf">
+                <span>
+                  <GithubIcon />
+                </span>
+                <span className="font-bold sm:text-base text-sm leading-none!">arackaf</span>
+              </PersonalLink>
+            </h4>
           </div>
         </div>
-      </section>
+      </div>
+      <div className="mb-8 flex flex-col gap-2">
+        <p>Hi, I'm Adam 👋</p>
+        <p>
+          Welcome to my blog. I usually write about web development—the React or Svelte stacks in particular—or occasionally GraphQL, databases, or
+          anything else I'm interested in.
+        </p>
+      </div>
 
-      <section className="py-16 px-6 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {features.map((feature, index) => (
-            <div
-              key={index}
-              className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-xl p-6 hover:border-cyan-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/10"
-            >
-              <div className="mb-4">{feature.icon}</div>
-              <h3 className="text-xl font-semibold text-white mb-3">
-                {feature.title}
-              </h3>
-              <p className="text-gray-400 leading-relaxed">
-                {feature.description}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
+      <div>
+        {posts.map((post) => (
+          <div key={post.title} className="blog-list-item mb-8">
+            <h1 className="leading-none text-2xl font-bold">
+              <a href={`/blog/${post.slug}`}>{post.title}</a>
+            </h1>
+            <small className="text-sm italic">
+              <DateFormatter dateString={post.date}></DateFormatter>
+            </small>
+            <p className="mt-1.5">{post.description}</p>
+          </div>
+        ))}
+      </div>
     </div>
-  )
+  );
 }
