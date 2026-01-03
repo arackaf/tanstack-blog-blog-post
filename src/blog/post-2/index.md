@@ -4,10 +4,12 @@ date: "2025-11-15T10:00:00.000Z"
 description: Post 2
 ---
 
-This is a blog post about JavaScript. This is what JavaScript looks like
+This is a blog post about SQL. This is what SQL looks like
 
-```ts
-function sum(x: number, y: number) {
-  return x + y;
-}
+```sql
+SELECT *
+FROM some_table st
+JOIN other_table ot
+ON st.id = ot.id
+WHERE active = true
 ```
