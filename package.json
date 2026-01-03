@@ -8,7 +8,8 @@
     "serve": "vite preview",
     "test": "vitest run",
     "generate-static-site": "npm run build &&rm -rf static-site && cp -r .output/public/. static-site/",
-    "update-tanstack": "npm i @tanstack/react-devtools@latest npm i @tanstack/react-router@latest && npm i @tanstack/react-router-devtools@latest && npm i @tanstack/react-router-ssr-query@latest && npm i @tanstack/react-start@latest && npm i @tanstack/router-plugin@latest"
+    "update-tanstack": "npm i @tanstack/react-devtools@latest npm i @tanstack/react-router@latest && npm i @tanstack/react-router-devtools@latest && npm i @tanstack/react-router-ssr-query@latest && npm i @tanstack/react-start@latest && npm i @tanstack/router-plugin@latest",
+    "start-static-server": "npx tsx static-server.ts"
   },
   "dependencies": {
     "@shikijs/markdown-it": "^3.15.0",
@@ -37,6 +38,7 @@
     "@testing-library/dom": "^10.4.0",
     "@testing-library/react": "^16.2.0",
     "@types/express": "^5.0.5",
+    "@types/markdown-it": "^14.1.2",
     "@types/node": "^22.10.2",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
