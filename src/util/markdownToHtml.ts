@@ -1,14 +1,8 @@
 import Shiki from "@shikijs/markdown-it";
 import MarkdownIt from "markdown-it";
 
-let markdownIt: MarkdownIt | null = null;
-
 async function getMarkdownIt() {
-  if (markdownIt) {
-    return markdownIt;
-  }
-
-  markdownIt = MarkdownIt({
+  const markdownIt = MarkdownIt({
     html: true,
   });
 
@@ -22,7 +16,7 @@ async function getMarkdownIt() {
         {
           name: "line-numbers-pre",
           preprocess: (_: string, options: any) => {
-            if (options?.meta?.__raw?.includes("lineNumbers")) {
+            if (options?.meta?.__raw?.includes("line-numbers")) {
               options.attributes = {};
               options.attributes.lineNumbers = true;
             }
@@ -38,7 +32,7 @@ async function getMarkdownIt() {
           },
         },
       ],
-    }),
+    })
   );
 
   return markdownIt;

@@ -13,3 +13,14 @@ JOIN other_table ot
 ON st.id = ot.id
 WHERE active = true
 ```
+
+Another query, with line numbers
+
+```sql line-numbers
+SELECT id, SUM(amount)
+FROM some_table st
+JOIN other_table ot
+ON st.id = ot.id
+WHERE active = true
+GROUP BY ot.id
+```
