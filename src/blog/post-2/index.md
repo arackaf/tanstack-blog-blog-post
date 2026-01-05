@@ -14,6 +14,10 @@ ON st.id = ot.id
 WHERE active = true
 ```
 
+This is a query execution plan
+
+![Alt text for the image](/post2/img1-sized.png)
+
 Another query, with line numbers
 
 ```sql line-numbers
