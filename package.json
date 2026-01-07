@@ -7,7 +7,7 @@
     "build": "vite build",
     "serve": "vite preview",
     "test": "vitest run",
-    "update-tanstack": "npm i @tanstack/react-devtools@latest npm i @tanstack/react-router@latest && npm i @tanstack/react-router-devtools@latest && npm i @tanstack/react-router-ssr-query@latest && npm i @tanstack/react-start@latest && npm i @tanstack/router-plugin@latest && npm i @tanstack/start-static-server-functions@latest",
+    "update-tanstack": "npm i @tanstack/react-devtools@latest && npm i @tanstack/react-router@latest && npm i @tanstack/react-router-devtools@latest && npm i @tanstack/react-router-ssr-query@latest && npm i @tanstack/react-start@latest && npm i @tanstack/router-plugin@latest && npm i @tanstack/start-static-server-functions@latest",
     "generate-static-site": "npm run build && rm -rf static-site && cp -r .output/public/. static-site/",
     "start-static-server": "npx tsx static-server.ts"
   },
