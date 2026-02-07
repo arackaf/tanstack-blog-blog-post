@@ -18,9 +18,6 @@ const config = defineConfig({
     tanstackStart({
       prerender: {
         enabled: true,
-        autoSubfolderIndex: true,
-        autoStaticPathsDiscovery: true,
-        crawlLinks: true,
       },
     }),
     viteReact(),
