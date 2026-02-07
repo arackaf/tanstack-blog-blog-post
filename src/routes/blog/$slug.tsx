@@ -6,8 +6,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { DateFormatter } from "@/components/date-formatter";
 import PostBody from "@/components/post-body";
 import { BackArrow } from "@/components/svg/backArrow";
-import { getAllBlogPosts, getPost, Post } from "@/util/blog-posts";
-import markdownToHtml from "@/util/markdownToHtml";
+import { getAllBlogPosts, getPost } from "@/util/blog-posts";
 
 export const getPostContent = createServerFn()
   .inputValidator((data: { slug: string }) => data)
@@ -18,10 +17,9 @@ export const getPostContent = createServerFn()
       throw new Error(`Post not found: ${data.slug}`);
     }
 
-    const post = getPost(data.slug, postContentLookup[data.slug]);
-    const content = await markdownToHtml(post.markdownContent);
+    const post = await getPost(data.slug, postContentLookup[data.slug]);
 
-    return { post: { ...post }, content };
+    return { post };
   });
 
 export const Route = createFileRoute("/blog/$slug")({
@@ -41,8 +39,8 @@ export const Route = createFileRoute("/blog/$slug")({
 });
 
 function RouteComponent() {
-  const { post, content } = Route.useLoaderData();
-  const { title, date } = post;
+  const { post } = Route.useLoaderData();
+  const { title, date, content } = post;
 
   console.log({ post });
 

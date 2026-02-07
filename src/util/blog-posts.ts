@@ -1,4 +1,5 @@
 import matter from "gray-matter";
+import markdownToHtml from "./markdownToHtml";
 
 export const getAllBlogPosts = () => {
   const allPosts: Record<string, any> = import.meta.glob("../blog/**/*.md", { query: "?raw", eager: true });
@@ -26,7 +27,7 @@ export type PostMetadata = {
 };
 
 export type Post = PostMetadata & {
-  markdownContent: string;
+  content: string;
 };
 
 const metadataFields: (keyof PostMetadata)[] = [
@@ -38,7 +39,7 @@ const metadataFields: (keyof PostMetadata)[] = [
   "ogImage",
   "coverImage",
 ];
-const postFields: (keyof Post)[] = [...metadataFields, "markdownContent"];
+const postFields: (keyof Post)[] = [...metadataFields, "content"];
 
 export function getPostMetadata(slug: string, fileContents: string): PostMetadata {
   const { data } = matter(fileContents);
@@ -57,12 +58,13 @@ export function getPostMetadata(slug: string, fileContents: string): PostMetadat
   return result;
 }
 
-export function getPost(slug: string, fileContents: string): Post {
+export async function getPost(slug: string, fileContents: string): Promise<Post> {
   const { data, content: markdownContent } = matter(fileContents);
+  const content = await markdownToHtml(markdownContent);
 
   const result: Post = {
     slug,
-    markdownContent,
+    content,
   } as Post;
 
   // Ensure only the minimal needed data is exposed
