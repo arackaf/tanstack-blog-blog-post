@@ -1,6 +1,6 @@
 import { FC, PropsWithChildren } from "react";
 
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 
 import { DateFormatter } from "@/components/date-formatter";
@@ -91,7 +91,9 @@ function App() {
         {posts.map(post => (
           <div key={post.title} className="blog-list-item mb-8">
             <h1 className="leading-none text-2xl font-bold">
-              <a href={`/blog/${post.slug}`}>{post.title}</a>
+              <Link to={`/blog/$slug`} params={{ slug: post.slug }}>
+                {post.title}
+              </Link>
             </h1>
             <small className="text-sm italic">
               <DateFormatter dateString={post.date}></DateFormatter>
