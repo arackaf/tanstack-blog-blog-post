@@ -1,10 +1,12 @@
+import { FC, PropsWithChildren } from "react";
+
+import { createFileRoute } from "@tanstack/react-router";
+import { createServerFn } from "@tanstack/react-start";
+
 import { DateFormatter } from "@/components/date-formatter";
 import { GithubIcon } from "@/components/svg/githubIcon";
 import { TwitterIcon } from "@/components/svg/twitterIcon";
 import { getAllBlogPosts, getPostMetadataFromContents, PostMetadata } from "@/util/blog-posts";
-import { createFileRoute } from "@tanstack/react-router";
-import { createServerFn } from "@tanstack/react-start";
-import { FC, PropsWithChildren } from "react";
 
 const getAllPosts = createServerFn().handler(async () => {
   const postContentLookup = getAllBlogPosts();
@@ -34,7 +36,10 @@ export const Route = createFileRoute("/")({
 
 const PersonalLink: FC<PropsWithChildren<{ href: string }>> = ({ href, children }) => {
   return (
-    <a href={href} className="flex items-center sm:gap-0.5 *:first:w-4.5 [&_svg]:fill-(--link-color) sm:[&_svg]:h-4 [&_svg]:h-3.5">
+    <a
+      href={href}
+      className="flex items-center sm:gap-0.5 *:first:w-4.5 [&_svg]:fill-(--link-color) sm:[&_svg]:h-4 [&_svg]:h-3.5"
+    >
       {children}
     </a>
   );
@@ -46,7 +51,11 @@ function App() {
     <div>
       <div className="blog-header flex mb-8">
         <div className="rounded-full overflow-hidden sm:w-[125px] sm:h-[125px] w-24 h-24 sm:min-w-[125px] sm:min-h-[125px] min-w-24 min-h-24">
-          <img alt="Profile pic" className="rounded-full sm:w-[125px] sm:h-[125px] w-24 h-24" src="/tanstack-logo.png" />
+          <img
+            alt="Profile pic"
+            className="rounded-full sm:w-[125px] sm:h-[125px] w-24 h-24"
+            src="/tanstack-logo.png"
+          />
         </div>
         <div className="titles flex flex-col ml-2.5 justify-evenly">
           <div className="flex flex-col gap-1">
@@ -79,7 +88,7 @@ function App() {
       </div>
 
       <div>
-        {posts.map((post) => (
+        {posts.map(post => (
           <div key={post.title} className="blog-list-item mb-8">
             <h1 className="leading-none text-2xl font-bold">
               <a href={`/blog/${post.slug}`}>{post.title}</a>

@@ -1,11 +1,13 @@
+import { useEffect } from "react";
+
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { createServerFn } from "@tanstack/react-start";
+
 import { DateFormatter } from "@/components/date-formatter";
 import PostBody from "@/components/post-body";
 import { BackArrow } from "@/components/svg/backArrow";
 import { getAllBlogPosts, getPostMetadataFromContents } from "@/util/blog-posts";
 import markdownToHtml from "@/util/markdownToHtml";
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { createServerFn } from "@tanstack/react-start";
-import { useEffect } from "react";
 
 export const getPostContent = createServerFn()
   .inputValidator((data: { slug: string }) => data)
