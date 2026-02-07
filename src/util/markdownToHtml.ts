@@ -1,11 +1,11 @@
 import Shiki from "@shikijs/markdown-it";
 import MarkdownIt from "markdown-it";
 
-async function getMarkdownIt() {
-  const markdownIt = MarkdownIt({
-    html: true,
-  });
+const markdownIt = MarkdownIt({
+  html: true,
+});
 
+async function getMarkdownIt() {
   markdownIt.use(
     await Shiki({
       themes: {
@@ -32,7 +32,7 @@ async function getMarkdownIt() {
           },
         },
       ],
-    })
+    }),
   );
 
   return markdownIt;
