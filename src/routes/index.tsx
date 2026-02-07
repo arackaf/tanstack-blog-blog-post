@@ -6,14 +6,14 @@ import { createServerFn } from "@tanstack/react-start";
 import { DateFormatter } from "@/components/date-formatter";
 import { GithubIcon } from "@/components/svg/githubIcon";
 import { TwitterIcon } from "@/components/svg/twitterIcon";
-import { getAllBlogPosts, getPostMetadataFromContents, PostMetadata } from "@/util/blog-posts";
+import { getAllBlogPosts, getPostMetadata, PostMetadata } from "@/util/blog-posts";
 
 const getAllPosts = createServerFn().handler(async () => {
   const postContentLookup = getAllBlogPosts();
 
   const blogPosts = Object.entries(postContentLookup).map(([slug, content]) => {
     return {
-      ...getPostMetadataFromContents(slug, content),
+      ...getPostMetadata(slug, content),
       markdownContent: "",
     };
   });

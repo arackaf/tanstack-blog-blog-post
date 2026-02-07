@@ -6,7 +6,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { DateFormatter } from "@/components/date-formatter";
 import PostBody from "@/components/post-body";
 import { BackArrow } from "@/components/svg/backArrow";
-import { getAllBlogPosts, getPostMetadataFromContents } from "@/util/blog-posts";
+import { getAllBlogPosts, getPost, Post } from "@/util/blog-posts";
 import markdownToHtml from "@/util/markdownToHtml";
 
 export const getPostContent = createServerFn()
@@ -18,17 +18,15 @@ export const getPostContent = createServerFn()
       throw new Error(`Post not found: ${data.slug}`);
     }
 
-    const post = {
-      ...getPostMetadataFromContents(data.slug, postContentLookup[data.slug]),
-    };
+    const post = getPost(data.slug, postContentLookup[data.slug]);
     const content = await markdownToHtml(post.markdownContent);
 
-    return { post: { ...post, markdownContent: "" }, content };
+    return { post: { ...post }, content };
   });
 
 export const Route = createFileRoute("/blog/$slug")({
   loader: async ({ params }) => {
-    return getPostContent({ data: { slug: params.slug } });
+    return await getPostContent({ data: { slug: params.slug } });
   },
   head: ({ params }) => {
     return {
@@ -45,6 +43,8 @@ export const Route = createFileRoute("/blog/$slug")({
 function RouteComponent() {
   const { post, content } = Route.useLoaderData();
   const { title, date } = post;
+
+  console.log({ post });
 
   useEffect(() => {
     for (const img of document.querySelectorAll("img")) {

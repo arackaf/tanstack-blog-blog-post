@@ -18,7 +18,6 @@ export const getAllBlogPosts = () => {
 export type PostMetadata = {
   title: string;
   date: string;
-  markdownContent: string;
   description: string;
   slug: string;
   author: string;
@@ -27,28 +26,51 @@ export type PostMetadata = {
 };
 
 export type Post = PostMetadata & {
-  content: string;
+  markdownContent: string;
 };
 
-const fields: (keyof Post)[] = ["title", "date", "description", "slug", "author", "ogImage", "coverImage"];
+const metadataFields: (keyof PostMetadata)[] = [
+  "title",
+  "date",
+  "description",
+  "slug",
+  "author",
+  "ogImage",
+  "coverImage",
+];
+const postFields: (keyof Post)[] = [...metadataFields, "markdownContent"];
 
-export function getPostMetadataFromContents(slug: string, fileContents: string): PostMetadata {
+export function getPostMetadata(slug: string, fileContents: string): PostMetadata {
+  const { data } = matter(fileContents);
+
+  const result: PostMetadata = {
+    slug,
+  } as PostMetadata;
+
+  // Ensure only the minimal needed data is exposed
+  metadataFields.forEach(field => {
+    if (typeof data[field] !== "undefined") {
+      result[field] = data[field];
+    }
+  });
+
+  return result;
+}
+
+export function getPost(slug: string, fileContents: string): Post {
   const { data, content: markdownContent } = matter(fileContents);
 
-  const items: Post = {
+  const result: Post = {
+    slug,
     markdownContent,
   } as Post;
 
   // Ensure only the minimal needed data is exposed
-  fields.forEach(field => {
-    if (field === "slug") {
-      items[field] = slug;
-    }
-
+  postFields.forEach(field => {
     if (typeof data[field] !== "undefined") {
-      items[field] = data[field];
+      result[field] = data[field];
     }
   });
 
-  return items;
+  return result;
 }
