@@ -63,7 +63,7 @@ function App() {
                 <span>
                   <TwitterIcon />
                 </span>
-                <span className="font-bold sm:text-base text-sm leading-none!">you</span>
+                <span className="font-bold sm:text-base text-sm leading-none!">You</span>
               </PersonalLink>
             </h4>
             <h4 className="leading-none">
@@ -71,7 +71,7 @@ function App() {
                 <span>
                   <GithubIcon />
                 </span>
-                <span className="font-bold sm:text-base text-sm leading-none!">you_also</span>
+                <span className="font-bold sm:text-base text-sm leading-none!">Also You</span>
               </PersonalLink>
             </h4>
           </div>
