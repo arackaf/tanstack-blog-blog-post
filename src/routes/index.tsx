@@ -11,12 +11,7 @@ import { getAllBlogPosts, getPostMetadata, PostMetadata } from "@/util/blog-post
 const getAllPosts = createServerFn().handler(async () => {
   const postContentLookup = getAllBlogPosts();
 
-  const blogPosts = Object.entries(postContentLookup).map(([slug, content]) => {
-    return {
-      ...getPostMetadata(slug, content),
-      markdownContent: "",
-    };
-  });
+  const blogPosts = Object.entries(postContentLookup).map(([slug, content]) => getPostMetadata(slug, content));
 
   const allPosts: PostMetadata[] = blogPosts
     // sort posts by date in descending order
@@ -26,9 +21,9 @@ const getAllPosts = createServerFn().handler(async () => {
 
 export const Route = createFileRoute("/")({
   loader: async () => {
-    const allPosts = await getAllPosts();
+    const posts = await getAllPosts();
     return {
-      posts: allPosts,
+      posts,
     };
   },
   component: App,

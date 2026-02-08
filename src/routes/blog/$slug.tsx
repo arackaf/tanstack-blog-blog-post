@@ -42,8 +42,6 @@ function RouteComponent() {
   const { post } = Route.useLoaderData();
   const { title, date, content } = post;
 
-  console.log({ post });
-
   useEffect(() => {
     for (const img of document.querySelectorAll("img")) {
       if (img.parentElement?.tagName === "A") {
