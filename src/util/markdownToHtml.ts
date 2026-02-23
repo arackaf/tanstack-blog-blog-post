@@ -1,6 +1,7 @@
 import Shiki from "@shikijs/markdown-it";
 import MarkdownIt from "markdown-it";
 
+let start = performance.now();
 const markdownIt = MarkdownIt({
   html: true,
 }).use(
@@ -31,7 +32,13 @@ const markdownIt = MarkdownIt({
     ],
   }),
 );
+let end = performance.now();
+console.log(`Shiki setup took ${end - start}ms`);
 
 export default async function markdownToHtml(markdown: string) {
-  return markdownIt.render(markdown);
+  start = performance.now();
+  const result = markdownIt.render(markdown);
+  end = performance.now();
+  console.log(`markdownToHtml took ${end - start}ms`);
+  return result;
 }

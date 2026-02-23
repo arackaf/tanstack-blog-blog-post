@@ -9,9 +9,15 @@ import { TwitterIcon } from "@/components/svg/twitterIcon";
 import { getAllBlogPosts, getPostMetadata, PostMetadata } from "@/util/blog-posts";
 
 const getAllPosts = createServerFn().handler(async () => {
+  let start = performance.now();
   const postContentLookup = getAllBlogPosts();
+  let end = performance.now();
+  console.log(`getAllBlogPosts took ${end - start}ms`);
 
+  start = performance.now();
   const blogPosts = Object.entries(postContentLookup).map(([slug, content]) => getPostMetadata(slug, content));
+  end = performance.now();
+  console.log(`getPostMetadata took ${end - start}ms`);
 
   const allPosts: PostMetadata[] = blogPosts
     // sort posts by date in descending order
