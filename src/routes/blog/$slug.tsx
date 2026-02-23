@@ -2,6 +2,7 @@ import { useEffect } from "react";
 
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
+import { staticFunctionMiddleware } from "@tanstack/start-static-server-functions";
 
 import { DateFormatter } from "@/components/date-formatter";
 import PostBody from "@/components/post-body";
@@ -10,6 +11,7 @@ import { getAllBlogPosts, getPost } from "@/util/blog-posts";
 
 export const getPostContent = createServerFn()
   .inputValidator((data: { slug: string }) => data)
+  .middleware([staticFunctionMiddleware])
   .handler(async ({ data }) => {
     const postContentLookup = getAllBlogPosts();
 

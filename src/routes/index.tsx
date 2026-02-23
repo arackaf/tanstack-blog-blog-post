@@ -2,22 +2,25 @@ import { FC, PropsWithChildren } from "react";
 
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
+import { staticFunctionMiddleware } from "@tanstack/start-static-server-functions";
 
 import { DateFormatter } from "@/components/date-formatter";
 import { GithubIcon } from "@/components/svg/githubIcon";
 import { TwitterIcon } from "@/components/svg/twitterIcon";
 import { getAllBlogPosts, getPostMetadata, PostMetadata } from "@/util/blog-posts";
 
-const getAllPosts = createServerFn().handler(async () => {
-  const postContentLookup = getAllBlogPosts();
+const getAllPosts = createServerFn()
+  .middleware([staticFunctionMiddleware])
+  .handler(async () => {
+    const postContentLookup = getAllBlogPosts();
 
-  const blogPosts = Object.entries(postContentLookup).map(([slug, content]) => getPostMetadata(slug, content));
+    const blogPosts = Object.entries(postContentLookup).map(([slug, content]) => getPostMetadata(slug, content));
 
-  const allPosts: PostMetadata[] = blogPosts
-    // sort posts by date in descending order
-    .sort((post1, post2) => (post1.date > post2.date ? -1 : 1));
-  return allPosts;
-});
+    const allPosts: PostMetadata[] = blogPosts
+      // sort posts by date in descending order
+      .sort((post1, post2) => (post1.date > post2.date ? -1 : 1));
+    return allPosts;
+  });
 
 export const Route = createFileRoute("/")({
   loader: async () => {
