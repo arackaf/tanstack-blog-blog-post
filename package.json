@@ -8,7 +8,7 @@
     "serve": "vite preview",
     "test": "vitest run",
     "update-tanstack": "npm i @tanstack/react-start@latest && npm i @tanstack/start-static-server-functions@latest && npm i @tanstack/react-devtools@latest && npm i @tanstack/react-router@latest && npm i @tanstack/react-router-devtools@latest && npm i @tanstack/react-router-ssr-query@latest && npm i @tanstack/router-plugin@latest",
-    "generate-static-site": "npm run build && rm -rf static-site && mkdir -p static-site/public static-site/dist && cp -r .output/public/. static-site/public && cp -r .output/dist/. static-site/dist",
+    "generate-static-site": "npm run build && rm -rf static-site && mkdir -p static-site && cp -r .output/. static-site",
     "start-static-server": "npx tsx static-server.ts"
   },
   "dependencies": {
