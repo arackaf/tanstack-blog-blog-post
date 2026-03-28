@@ -10,7 +10,7 @@ import { TwitterIcon } from "@/components/svg/twitterIcon";
 import { getAllBlogPosts, getPostMetadata, PostMetadata } from "@/util/blog-posts";
 
 const getAllPosts = createServerFn()
-  .middleware([staticFunctionMiddleware])
+  //.middleware([staticFunctionMiddleware])
   .handler(async () => {
     const postContentLookup = getAllBlogPosts();
 

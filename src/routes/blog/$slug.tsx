@@ -11,7 +11,7 @@ import { getAllBlogPosts, getPost } from "@/util/blog-posts";
 
 export const getPostContent = createServerFn()
   .inputValidator((data: { slug: string }) => data)
-  .middleware([staticFunctionMiddleware])
+  //.middleware([staticFunctionMiddleware])
   .handler(async ({ data }) => {
     const postContentLookup = getAllBlogPosts();
 
