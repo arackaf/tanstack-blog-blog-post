@@ -10,7 +10,6 @@ const PORT = 3003;
 
 // Serve static files from the static-site directory
 app.use(express.static(path.join(__dirname, "static-site/public")));
-app.use(express.static(path.join(__dirname, "static-site/dist/client")));
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
